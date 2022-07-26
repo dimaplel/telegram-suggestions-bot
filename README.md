@@ -82,7 +82,7 @@ TEXT_MESSAGES = {
 ## Installation guide
 
 1. Clone this repository using terminal or tools in your IDE: 
-`https://github.com/dimaplel/telegram-suggestions-bot.git`
+`git clone https://github.com/dimaplel/telegram-suggestions-bot.git`
 2. Change directory in terminal `cd $repository-direcory`
 3. Download requirements `pip install -r requirements.txt`
 4. Edit and update [`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
@@ -179,7 +179,7 @@ TEXT_MESSAGES = {
 
 ## Керівництво по встановленню
 
-1. Зклонуйте репозиторій за допомогою терміналу або інструментів у вашій IDE: `https://github.com/dimaplel/telegram-suggestions-bot.git`
+1. Зклонуйте репозиторій за допомогою терміналу або інструментів у вашій IDE: `git clone https://github.com/dimaplel/telegram-suggestions-bot.git`
 2. Змініть папку в терміналі `cd $repository-directory`
 3. Встановіть вимоги `pip install -r requirements.txt`
 4. Відредагуйте та оновіть [`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
