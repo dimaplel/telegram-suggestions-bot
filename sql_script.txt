@@ -1,0 +1,18 @@
+create function expire_table_delete_old_rows() returns trigger
+    language plpgsql
+as
+$$
+DECLARE
+  row_count int;
+
+BEGIN
+  DELETE FROM message_id WHERE datatime < NOW() - INTERVAL '1 days';
+  IF found THEN
+    GET DIAGNOSTICS row_count = ROW_COUNT;
+    RAISE NOTICE 'DELETEd % row(s) FROM message_id', row_count;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+alter function expire_table_delete_old_rows() owner to <user>;
