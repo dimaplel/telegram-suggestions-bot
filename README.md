@@ -1,6 +1,6 @@
 # Suggestions Bot - Telegram 🇬🇧
 
-[_Версія українською 🇺🇦_](github.com/dimaplel/telegram-suggestions-bot#suggestions-bot---telegram--1)
+[_Версія українською 🇺🇦_](https://github.com/dimaplel/telegram-suggestions-bot#suggestions-bot---telegram--1)
 
 Bot was created originally for IASA Student Council to handle suggestions, questions and requests. However, you can 
 freely fork this repository and create your own bot.
