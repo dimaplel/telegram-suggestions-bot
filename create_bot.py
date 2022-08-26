@@ -11,7 +11,7 @@ dp = Dispatcher(bot)
 base = psycopg2.connect(host=HOSTNAME, dbname=DATABASE, user=USERNAME, password=DB_PASS, port=PORT_ID)
 cursor = base.cursor(cursor_factory=psycopg2.extras.DictCursor)
 try:
-    cursor.execute(f'CREATE TABLE IF NOT EXISTS ban_id (user_id int PRIMARY KEY, ban_reason varchar(70))')
+    cursor.execute(f'CREATE TABLE IF NOT EXISTS ban_id (user_id int PRIMARY KEY, ban_reason text)')
     cursor.execute(f'CREATE TABLE IF NOT EXISTS message_id (user_message_id int, bot_message_id int, datatime '
                    f'timestamp)')
     base.commit()
