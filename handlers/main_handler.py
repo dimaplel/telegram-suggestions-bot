@@ -66,19 +66,19 @@ async def forward_handler(message: types.Message):
     # Defining type of the message
     if message.text and not message.is_command():
         await message.answer(TEXT_MESSAGES['pending'])
-        text_user = TEXT_MESSAGES['message_template'].format(message.from_user.username, message.text + '\n\n',
+        text_user = TEXT_MESSAGES['message_template'].format(message.from_user.username, message.parse_entities() + '\n\n',
                                                              user_id)
-        bot_message = await bot.send_message(chat_id=CHAT_ID, parse_mode="HTML", text=text_user)
+        bot_message = await bot.send_message(chat_id=CHAT_ID, parse_mode="HTML", text=text_user, entities=message.entities)
     # Stickers are not allowed from user's side because he might be not banned using reply
     elif message.sticker:
         await message.reply(TEXT_MESSAGES['unsupported_format'])
         return
     else:
         caption = TEXT_MESSAGES['message_template'].format(message.from_user.username,
-                                                           message.caption + '\n\n' if message.caption is not None
+                                                           message.parse_entities() + '\n\n' if message.caption is not None
                                                            else '', user_id)
         bot_message = await bot.copy_message(chat_id=CHAT_ID, from_chat_id=user_id, message_id=message.message_id,
-                                             caption=caption, parse_mode='HTML')
+                                             caption=caption, parse_mode='HTML', entities=message.entities)
 
     utc_time = datetime.utcnow()
     date_utc = utc_time.strftime('%Y-%m-%d %H:%M:%S')
@@ -104,15 +104,15 @@ async def chat_edited_messages(message: types.Message):
     # Defining type of the message
     if message.text:
         try:
-            await bot.edit_message_text(chat_id=user_id, message_id=to_edit_id, text=message.text,
-                                        parse_mode='Markdown')
+            await bot.edit_message_text(chat_id=user_id, message_id=to_edit_id, text=message.parse_entities(),
+                                        parse_mode='HTML', entities=message.entities)
         except Exception as e:
             if type(e) == aiogram.utils.exceptions.MessageToEditNotFound:
                 await message.reply(TEXT_MESSAGES['message_not_found'])
     else:
         try:
-            await bot.edit_message_caption(chat_id=user_id, message_id=to_edit_id, caption=message.caption,
-                                           parse_mode="HTML")
+            await bot.edit_message_caption(chat_id=user_id, message_id=to_edit_id, caption=message.parse_entities(),
+                                           parse_mode="HTML", entities=message.entities)
         except Exception as e:
             if type(e) == aiogram.utils.exceptions.MessageNotModified:
                 await message.reply(TEXT_MESSAGES['message_was_not_edited'])
@@ -133,24 +133,24 @@ async def private_edited_messages(message: types.Message):
     to_edit_id = cursor.fetchone()[0]
     # Defining type of the message
     if message.text:
-        text_user = TEXT_MESSAGES['message_template'].format(message.from_user.username, message.text + '\n\n',
+        text_user = TEXT_MESSAGES['message_template'].format(message.from_user.username, message.parse_entities() + '\n\n',
                                                              user_id)
         # Trying to edit text. If not successful - message was not found in database
         try:
             await bot.edit_message_text(text=text_user, chat_id=CHAT_ID, message_id=to_edit_id,
-                                        parse_mode="HTML")
+                                        parse_mode="HTML", entities=message.entities)
         except Exception as e:
             if type(e) == aiogram.utils.exceptions.MessageToEditNotFound:
                 await message.reply(TEXT_MESSAGES['message_not_found'])
     else:
         text_user = TEXT_MESSAGES['message_template'].format(message.from_user.username,
-                                                             message.caption + '\n\n' if message.caption is not None
+                                                             message.parse_entities() + '\n\n' if message.caption is not None
                                                              else '', user_id)
         # Bot can edit only caption and text, so if user or chat member is trying to edit photo/video itself, we notify
         # him that he cannot do it.
         try:
             await bot.edit_message_caption(chat_id=CHAT_ID, message_id=to_edit_id, caption=text_user,
-                                           parse_mode="HTML")
+                                           parse_mode="HTML", entities=message.entities)
         except Exception as e:
             if type(e) == aiogram.utils.exceptions.MessageNotModified:
                 await message.reply(TEXT_MESSAGES['message_was_not_edited'])
