@@ -78,7 +78,7 @@ async def forward_handler(message: types.Message):
                                                            message.parse_entities() + '\n\n' if message.caption is not None
                                                            else '', user_id)
         bot_message = await bot.copy_message(chat_id=CHAT_ID, from_chat_id=user_id, message_id=message.message_id,
-                                             caption=caption, parse_mode='HTML', entities=message.entities)
+                                             caption=caption, parse_mode='HTML')
 
     utc_time = datetime.utcnow()
     date_utc = utc_time.strftime('%Y-%m-%d %H:%M:%S')

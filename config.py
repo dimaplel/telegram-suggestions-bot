@@ -1,15 +1,17 @@
+import os
+
 # Bot Data
-TOKEN = "<YOUR BOT TOKEN>"      # Get your bot token using https://t.me/BotFather
+TOKEN = os.getenv("TELEGRAM_TOKEN")      # Get your bot token using https://t.me/BotFather
 
 # Support Chat
-CHAT_ID = 0                     # To find out your channels ID use: https://t.me/getidsbot
+CHAT_ID = os.getenv("CHAT_ID")                    # To find out your channels ID use: https://t.me/getidsbot
 
 # Database Data
-HOSTNAME = "<YOUR HOST>"
-DATABASE = "<YOUR DATABASE NAME>"
-USERNAME = "<USER>"
-PORT_ID = 5432
-DB_PASS = "<YOUR PASSWORD>"
+HOSTNAME = os.getenv("POSTGRES_HOST")
+DATABASE = os.getenv("POSTGRES_DB")
+USERNAME = os.getenv("POSTGRES_USER")
+PORT_ID = os.getenv("POSTGRES_PORT")
+DB_PASS = os.getenv("POSTGRES_PASSWORD")
 
 # Predefined text to send, you can change its values to customize your own bot
 TEXT_MESSAGES = {
