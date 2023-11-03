@@ -12,10 +12,11 @@ DATABASE = os.getenv("POSTGRES_DB")
 USERNAME = os.getenv("POSTGRES_USER")
 PORT_ID = os.getenv("POSTGRES_PORT")
 DB_PASS = os.getenv("POSTGRES_PASSWORD")
+REMOVAL_INTERVAL = os.getenv("ROW_REMOVAL_INTERVAL")
 
 # Predefined text to send, you can change its values to customize your own bot
 TEXT_MESSAGES = {
-    'start': 'Welcome to Suggestions Bot 👋 \n\n Please, send your message and we will process your request.',
+    'start': 'Welcome to Suggestions Bot 👋 \n\nPlease, send your message and we will process your request.',
     'message_template': '<i>Message from: <b>@{0}</b>.</i>\n\n{1}<b>id: {2}</b>',
     'is_banned': '❌ User is banned!', 'has_banned': '✅ User has been successfully banned!',
     'already_banned': '❌ User is already banned!', 'has_unbanned': '✅ User has been successfully un-banned!',

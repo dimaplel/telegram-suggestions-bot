@@ -33,27 +33,31 @@ or failure.
 ### Message editing
 
 Message editing is implemented using SQL table. When a message is being sent - bot inserts original message id and
-forwarded message id into SQL table. For place optimisation in the table a script was written, which deletes row 
-after some time passes. You can copy script from
-[`sql_script.txt`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/sql_script.txt). To configure time 
-interval after which a row is being deleted, `INTERVAL '<interval>'` should be set  according to time standards in SQL.
+forwarded message id into SQL table. For storage optimisation purposes in the table a script was written, which deletes 
+row after some time passes, which can be found in [`create_bot.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/create_bot.py) 
+To configure time interval after which added entry is to be deleted (1 day by default), edit `.env` variable 
+`ROW_REMOVAL_INTERVAL` according to time standards in SQL.
 
-## Config
+## Config and environment
 
 To setup a bot for your own usage, you should specify those variables in 
-[`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py).
+[`.env`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/.env).
 
 ``` bash
+COMPOSE_FILE=docker-compose.yml
+
 # Bot Data
-TOKEN = # your bot's token
-CHAT_ID = # chat id where the bot will forward users' messages
+TELEGRAM_TOKEN="<YOUR BOT TOKEN>" # your bot's token
+CHAT_ID=0 # chat id where the bot will forward users' messages
 
 # Database Data
-HOSTNAME = # host of sql database
-DATABASE = # database name
-USERNAME = # username to log in
-PORT_ID = # port to connect to database
-DB_PASS = # password to access database
+POSTGRES_HOST="<YOUR HOST>" # host of sql database
+POSTGRES_PASSWORD="<YOUR PASSWORD>" # password to access database
+POSTGRES_DB="<YOUR DATABASE NAME>" # database name
+POSTGRES_USER="<USER>" # username to log in 
+POSTGRES_PORT=5432 # port to connect to database
+PGDATA=/var/lib/postgresql/data
+ROW_REMOVAL_INTERVAL="1 days" # interval after which an entry is removed from the message table
 ```
 
 To change default text to your custom, redefine values of the dictionary for each phrase in 
@@ -85,11 +89,11 @@ TEXT_MESSAGES = {
 `git clone https://github.com/dimaplel/telegram-suggestions-bot.git`
 2. Change directory in terminal `cd $repository-direcory`
 3. Download requirements `pip install -r requirements.txt`
-4. Edit and update [`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
-5. Create a new routine operator in your SQL database and insert script from 
-[`sql_script.txt`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/sql_script.txt) so that database 
-could delete rows by itself after some time. By the way, don't forget to configure SQL user instead of `<user>` tag
-6. Run the bot `python bot.py` or by deploying it to [__Heroku__](https://heroku.com/deploy)
+4. Edit and update [`.env`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/.env) and/or 
+[`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
+5. Launch Docker
+6. Run the bot with `docker compose up --build` or with [GNU Make](https://www.gnu.org/software/make/):
+`make up`
 
 ## Authors
 
@@ -131,27 +135,31 @@ could delete rows by itself after some time. By the way, don't forget to configu
 
 Редагування повідомлень реалізовано за допомогою SQL таблиці. Коли присилається повідомлення - бот вставляє
 в таблицю id оригінального повідомлення та id пересланого повідомлення. Задля оптимізації місця у таблиці було 
-написано скрипт, який видаляє рядок через деякий час (перевірка на час здійснюється, коли новий елемент додається
-до таблиці). Детально ознайомитися з ним та скопіювати можна з
-[`sql_script.txt`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/sql_script.txt). 
-За час для видалення відповідає значення `INTERVAL '<interval>'`, який оформлюється згідно з форматом часу SQL.
+написано тригер, який видаляє рядок через деякий час (перевірка на час здійснюється, коли новий елемент додається
+до таблиці). Тригер встановлюється у [`create_bot.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/create_bot.py). 
+Для зміни часу до видалення запису (1 день за замовчуванням) налаштуйте змінну оточення `ROW_REMOVAL_INTERVAL` згідно
+з форматом часу SQL.
 
-## Config
+## Config та змінні оточення
 
 Для того, щоб налаштувати бота для власного використання, потрібно вказати наступні змінні в 
-[`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
+[`.env`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/.env)
 
 ``` bash
+COMPOSE_FILE=docker-compose.yml
+
 # Bot Data
-TOKEN = # токен вашого бота
-CHAT_ID = # id чату, куди бот пересилатиме повідомлення від користувачів
+TELEGRAM_TOKEN="<YOUR BOT TOKEN>" # токен вашого бота
+CHAT_ID=0 # id чату, куди бот пересилатиме повідомлення від користувачів
 
 # Database Data
-HOSTNAME = # хост бази даних sql
-DATABASE = # ім'я бази данних
-USERNAME = # username для входу в базу даних
-PORT_ID = # порт для з'єднання з базою даних
-DB_PASS = # пароль для бази даних
+POSTGRES_HOST="<YOUR HOST>" # хост бази даних sql
+POSTGRES_PASSWORD="<YOUR PASSWORD>" # пароль для бази даних
+POSTGRES_DB="<YOUR DATABASE NAME>" # ім'я бази данних
+POSTGRES_USER="<USER>" # username для входу в базу даних
+POSTGRES_PORT=5432 # порт для з'єднання з базою даних
+PGDATA=/var/lib/postgresql/data
+ROW_REMOVAL_INTERVAL="1 days" # інтервал після якого запис про повідомлення видаляється з таблиці
 ```
 
 Для того, щоб змінити стандартний текст відповідей бота на ваш власний, змініть значення в словнику для кожної фрази в 
@@ -182,11 +190,11 @@ TEXT_MESSAGES = {
 1. Зклонуйте репозиторій за допомогою терміналу або інструментів у вашій IDE: `git clone https://github.com/dimaplel/telegram-suggestions-bot.git`
 2. Змініть папку в терміналі `cd $repository-directory`
 3. Встановіть вимоги `pip install -r requirements.txt`
-4. Відредагуйте та оновіть [`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
-5. Створіть новий routine operator у вашій базі даних SQL та вставте скрипт з 
-[`sql_script.txt`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/sql_script.txt), щоб база даних самостійно 
-видаляла рядки таблиці після деякого часу. До речі, не забудьте зазначити користувача в базі даних замість тегу `<user>`
-6. Запустіть бота локально `python bot.py` або за допомогою [__Heroku__](https://heroku.com/deploy)
+4. Відредагуйте та оновіть [`.env`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/.env) та/або
+[`config.py`](https://github.com/dimaplel/telegram-suggestions-bot/blob/main/config.py)
+5. Запустіть Docker
+6. Запустіть бота у терміналі `docker compose up --build` або з [GNU Make](https://www.gnu.org/software/make/):
+`make up`
 
 ## Автори
 

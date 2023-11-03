@@ -4,13 +4,11 @@ services:
     image: postgres:14.6-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: spshimmsa23
-      POSTGRES_DB: hackatondb
-      POSTGRES_USER: analytic23
       PGDATA: /pgdata
     volumes:
       - ./db:/var/lib/postgresql/data:rw
-      - ./sql_script.txt:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - ./.env
 
   bot:
     build: .
