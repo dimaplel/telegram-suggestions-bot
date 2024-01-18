@@ -27,7 +27,7 @@ try:
       row_count int;
 
     BEGIN
-      DELETE FROM message_id WHERE datatime < NOW() - INTERVAL {REMOVAL_INTERVAL};
+      DELETE FROM message_id WHERE datatime < NOW() - INTERVAL '{REMOVAL_INTERVAL}';
       IF found THEN
         GET DIAGNOSTICS row_count = ROW_COUNT;
         RAISE NOTICE 'DELETEd % row(s) FROM message_id', row_count;
