@@ -1,10 +1,13 @@
+import logging
+
 import aiogram.utils.exceptions
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import filters
 from datetime import datetime
 
 from config import *
-from create_bot import bot, cursor, base, is_banned
+from create_bot import bot, cursor, base
+from handlers.admin_handler import is_banned
 
 
 # Function to get user id from message more easy
@@ -112,7 +115,7 @@ async def chat_edited_messages(message: types.Message):
     else:
         try:
             await bot.edit_message_caption(chat_id=user_id, message_id=to_edit_id, caption=message.parse_entities(),
-                                           parse_mode="HTML", entities=message.entities)
+                                           parse_mode="HTML")
         except Exception as e:
             if type(e) == aiogram.utils.exceptions.MessageNotModified:
                 await message.reply(TEXT_MESSAGES['message_was_not_edited'])
@@ -150,7 +153,7 @@ async def private_edited_messages(message: types.Message):
         # him that he cannot do it.
         try:
             await bot.edit_message_caption(chat_id=CHAT_ID, message_id=to_edit_id, caption=text_user,
-                                           parse_mode="HTML", entities=message.entities)
+                                           parse_mode="HTML")
         except Exception as e:
             if type(e) == aiogram.utils.exceptions.MessageNotModified:
                 await message.reply(TEXT_MESSAGES['message_was_not_edited'])

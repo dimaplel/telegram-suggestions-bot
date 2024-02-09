@@ -1,8 +1,14 @@
-from create_bot import base, cursor, is_banned, bot
+from create_bot import base, cursor, bot
 from handlers import main_handler
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import filters
 from config import *
+
+
+# Function for checking if user is banned
+def is_banned(user_id):
+    cursor.execute(f"SELECT user_id FROM ban_id WHERE user_id = {user_id}")
+    return True if cursor.fetchone() else False
 
 
 # Function which helps to prevent SQL error (if chat participant answers to bot informing message)

@@ -3,7 +3,6 @@ import psycopg2.extras
 
 from aiogram import Bot, Dispatcher
 
-import config
 from config import *
 
 # Creating bot and dispatcher with built-in functions
@@ -42,9 +41,3 @@ try:
     logging.info("Tables were successfully created, routine function was set!")
 except Exception as e:
     logging.error(e)
-
-
-# Function for checking if user is banned
-def is_banned(user_id):
-    cursor.execute(f"SELECT user_id FROM ban_id WHERE user_id = {user_id}")
-    return True if cursor.fetchone() else False

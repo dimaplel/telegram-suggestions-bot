@@ -3,8 +3,6 @@ services:
   db:
     image: postgres:14.6-alpine
     restart: unless-stopped
-    environment:
-      PGDATA: /pgdata
     volumes:
       - ./db:/var/lib/postgresql/data:rw
     env_file:
@@ -12,7 +10,7 @@ services:
 
   bot:
     build: .
-    restart: always
+    restart: unless-stopped
     depends_on:
       - db
     env_file:

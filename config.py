@@ -1,10 +1,10 @@
 import os
 
 # Bot Data
-TOKEN = os.getenv("TELEGRAM_TOKEN")      # Get your bot token using https://t.me/BotFather
+TOKEN = os.getenv("TELEGRAM_TOKEN") # Get your bot token using https://t.me/BotFather
 
 # Support Chat
-CHAT_ID = os.getenv("CHAT_ID")                    # To find out your channels ID use: https://t.me/getidsbot
+CHAT_ID = os.getenv("CHAT_ID") # To find out your channels ID use: https://t.me/getidsbot
 
 # Database Data
 HOSTNAME = os.getenv("POSTGRES_HOST")
